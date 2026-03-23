@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Private Journal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    text-align: center;
+}
+
+h2 { margin-bottom: 10px; color: #222; cursor: pointer; }
+
+.container {
+    max-width: 400px;
+    width: 90%;
+    margin: 60px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.password-container { position: relative; margin: 15px 0; }
+
+input[type="password"], input[type="text"] {
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.toggle-eye {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+}
+
+.toggle-eye svg { width: 100%; height: 100%; fill: #555; }
+
+button.submit-btn, .entry-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 5px;
+}
+
+button.submit-btn:hover, .entry-btn:hover { background-color: #0056b3; }
+.error-message { color: red; font-size: 0.9em; margin-top: 5px; }
+
+/* Diary */
+#journal { display: none; max-width: 800px; margin: 50px auto; text-align: left; padding: 0 10px; }
+
+.diary-navigation { text-align: center; margin-bottom: 30px; }
+
+.diary-navigation button {
+    margin: 5px;
+    padding: 8px 12px;
+    font-size: 0.95em;
+    border-radius: 5px;
+    border: none;
+    background-color: #17a2b8;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.diary-navigation button:hover { background-color: #117a8b; }
+
+.diary-entry {
+    display: none;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 5px solid #007bff;
+}
+
+.diary-entry h3 { margin-top: 0; color: #007bff; }
+.diary-entry p { margin: 10px 0 0 0; line-height: 1.6; color: #555; }
+
+@media (max-width: 500px) {
+    .container { margin: 40px auto; padding: 15px; }
+    input[type="password"], input[type="text"] { padding: 10px 35px 10px 10px; font-size: 0.95em; }
+    button.submit-btn { padding: 8px; font-size: 0.95em; }
+    .diary-entry { padding: 15px; }
+    .diary-navigation button { padding: 6px 10px; font-size: 0.85em; }
+}
+</style>
+</head>
+<body>
+
+<!-- Step 1 -->
+<div class="container" id="step1">
+    <h2>Protected Access</h2>
+    <p>Enter password:</p>
+    <div class="password-container">
+        <input type="password" id="password1" placeholder="Enter password">
+        <button class="toggle-eye" onclick="togglePassword('password1', this)">
+            <svg viewBox="0 0 24 24" class="eye-open">
+                <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+                <circle cx="12" cy="12" r="2.5"/>
+            </svg>
+        </button>
+    </div>
+    <button class="submit-btn" onclick="checkStep1()">Submit</button>
+    <p id="message1" class="error-message"></p>
+</div>
+
+<!-- Step 2 -->
+<div class="container" id="step2">
+    <h2>Security Question</h2>
+    <p>Favourite flower:</p>
+    <div class="password-container">
+        <input type="password" id="password2" placeholder="Enter answer">
+        <button class="toggle-eye" onclick="togglePassword('password2', this)">
+            <svg viewBox="0 0 24 24" class="eye-open">
+                <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+                <circle cx="12" cy="12" r="2.5"/>
+            </svg>
+        </button>
+    </div>
+    <button class="submit-btn" onclick="checkStep2()">Submit</button>
+    <p id="message2" class="error-message"></p>
+</div>
+
+<!-- Diary -->
+<div id="journal">
+    <h2 id="diary-header" style="text-align:center; margin-bottom:30px;">Diary Entries</h2>
+    <div class="diary-navigation">
+        <button onclick="showEntry('entry1')">29th Sep</button>
+        <button onclick="showEntry('entry2')">30th Sep</button>
+        <button onclick="showEntry('entry3')">6th Oct</button>
+    </div>
+
+    <div class="diary-entry" id="entry1">
+        <h3>29th of September</h3>
+        <p>This is the usual job, I shouldn't feel bad about it. It was easy to get close to his friend, and I'll surely get close to him as well. I have to: I still need to dig for more.</p>
+    </div>
+
+    <div class="diary-entry" id="entry2">
+        <h3>30th of September</h3>
+        <p>I think he's a genuinely good person. I'm enjoying the mission, but not in the way I was expecting. I feel guilty, but I already received the paycheck. This is unlike me.</p>
+    </div>
+
+    <div class="diary-entry" id="entry3">
+        <h3>6th of October</h3>
+        <p>Something shifted. I was supposed to stay at a safe distance, at least emotionally. Just gather facts, evidence. This was never part of the plan. I really want to stay around... but tomorrow will be the last time I'll see him. See them both.</p>
+    </div>
+</div>
+
+<script>
+let currentEntry = null;
+
+// Step 1 password, case-insensitive
+function checkStep1() {
+    const pass1 = document.getElementById("password1").value.toLowerCase();
+    if (pass1 === "miloisabella410") {
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("step2").style.display = "block";
+    } else {
+        document.getElementById("message1").textContent = "Incorrect password";
+    }
+}
+
+// Step 2
+function checkStep2() {
+    const pass2 = document.getElementById("password2").value;
+    if (pass2.toLowerCase() === "daisy") {
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("journal").style.display = "block";
+    } else {
+        document.getElementById("message2").textContent = "Incorrect answer";
+    }
+}
+
+// Toggle password
+function togglePassword(id, btn) {
+    const input = document.getElementById(id);
+    const svg = btn.querySelector('svg');
+    if (input.type === "password") {
+        input.type = "text";
+        svg.innerHTML = `<path d="M1 12c1.73-3.89 6-7 11-7s9.27 3.11 11 7c-1.73 3.89-6 7-11 7s-9.27-3.11-11-7zm11-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>`; // closed eye
+    } else {
+        input.type = "password";
+        svg.innerHTML = `<path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/>`; // open eye
+    }
+}
+
+// Show a single diary entry
+function showEntry(id) {
+    if (currentEntry) currentEntry.style.display = 'none';
+    const entry = document.getElementById(id);
+    entry.style.display = 'block';
+    currentEntry = entry;
+}
+
+// Clicking "Diary Entries" header hides all entries
+document.getElementById('diary-header').addEventListener('click', () => {
+    if (currentEntry) currentEntry.style.display = 'none';
+    currentEntry = null;
+});
+
+document.getElementById('step2').style.display = 'none';
+</script>
+
+</body>
+</html>
